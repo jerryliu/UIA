@@ -1,0 +1,23 @@
+{
+  "name": "uia",
+  "version": "1.0.0",
+  "description": "UI assignment",
+  "main": ".eslintrc.js",
+  "scripts": {
+    "init-database": "docker run --name test-instance -p 5432:5432 -e POSTGRES_DATABASE=ui_test -e POSTGRES_USER=ui_test -e POSTGRES_PASSWORD=password -d postgres"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jerryliu/UIA.git"
+  },
+  "keywords": [
+    "UI",
+    "assignment"
+  ],
+  "author": "Jerry Liu",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jerryliu/UIA/issues"
+  },
+  "homepage": "https://github.com/jerryliu/UIA#readme"
+}
