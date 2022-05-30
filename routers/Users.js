@@ -27,7 +27,7 @@ router.get('/', verifyToken, async (req, res) => {
     resultObj["status"]=1;
     resultObj["info"]="OK";
   }catch (err){
-    resultObj["info"]=err.name;
+    resultObj["info"]=err.errors[0].message;
     res.send(resultObj)      
   }
   res.json(resultObj);
@@ -60,7 +60,7 @@ router.get('/:id',verifyToken ,async (req, res) => {
     }
     res.json(resultObj);
   }catch(err){
-    resultObj["info"]=err.name;
+    resultObj["info"]=err.errors[0].message;
     res.send(resultObj)    
   }
 
@@ -73,10 +73,9 @@ router.post('/', async (req, res) =>{
   if(!formData["acct"] || !formData["pwd"] || !formData["fullname"]){
     resultObj["info"]="Please input full data";
     return res.json(resultObj)
-  }else{
-    formData["acct"]=formData["acct"].trim();
-    formData["pwd"]=formData["pwd"].trim();
-    formData["fullname"]=formData["fullname"].trim();
+  }
+  for (let [key] of Object.entries(formData)) {
+    formData[key] = formData[key].trim();
   }
   formData["pwd"] = MD5(formData["pwd"]).toString();
   try{
@@ -86,7 +85,7 @@ router.post('/', async (req, res) =>{
     resultObj["data"]=user;
     res.send(resultObj)
   } catch(err){
-    resultObj["info"]=err.name;
+    resultObj["info"]=err.errors[0].message;
     res.send(resultObj)
   }
 })
@@ -109,8 +108,51 @@ router.delete('/:id',verifyToken, async (req, res) => {
     resultObj['info'] = (resultObj['status']  === 1)? `The user ID:${req.params.id} was deleted`:`The user ID does not exist`;
     res.json(resultObj);
   }catch(err){
-    resultObj["info"]=err.name;
-    res.send(resultObj)
+    resultObj["info"]=err.errors[0].message;
+    res.send(resultObj);
   }
+})
+
+//10:Create an API to update the user.
+router.put('/:id',verifyToken, async (req, res) => {
+  let resultObj={status:0,info:"", data:{}};
+  if(!req.authenticated){
+    resultObj["info"]="Unauthicated access";
+    return res.json(resultObj)
+  } 
+  if(isNaN(req.params.id)){
+    resultObj["info"]="Please input a user ID";
+    return res.json(resultObj)
+  }
+  const formData = req.body;
+  if(!formData["acct"] || !formData["pwd"] || !formData["fullname"]){
+    resultObj["info"]="Please input full data";
+    return res.json(resultObj)
+  }
+  for (let [key] of Object.entries(formData)) {
+    formData[key] = formData[key].trim();
+  }
+  if(formData["pwd"]){
+    formData["pwd"] = MD5(formData["pwd"]).toString();
+  }
+  try{
+    const result = await Users.update(formData,{
+      where: {id: req.params.id}
+    })
+    if(result[0]===0){
+      resultObj["status"]=0
+      resultObj["info"]="User ID not found";
+    }else{
+      resultObj["status"]=1
+      resultObj["info"]="The user was updated";
+      resultObj["data"]=formData;
+    }
+    res.send(resultObj)
+  }catch(err){
+    console.log(err)
+    resultObj["info"]=err.errors[0].message;
+    res.send(resultObj);
+  }
+
 })
 module.exports = router;
