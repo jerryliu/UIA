@@ -42,3 +42,5 @@ I made a helps/verifyToken.js for common using
 #### (feat/impl-api)commit 4: Create an API to list all users.
 * I made a index.js, database.js, routers/Users.js and migrations 
 * Please sign up and login for the get user token
+#### (feat/impl-api)commit 5: Create an API to search an user by fullname.
+* I made an object for the where condition.
