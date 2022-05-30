@@ -23,17 +23,19 @@ const Users = db.define('users', {
       type: Sequelize.STRING,
       field: 'fullname'
     },
-    createdAt: {
+    created_at: {
       type: Sequelize.DATE,
       field: 'created_at',
+      defaultValue: Sequelize.NOW
     },
-    updatedAt: {
+    updated_at: {
       type: Sequelize.DATE,
-      field: 'updated_at'
+      field: 'updated_at',
+      defaultValue: Sequelize.NOW
     }
   }, {
     freezeTableName: true, // Model tableName will be the same as the model name
-    timestamps: true,
+    timestamps: false,
     underscored: true
   });
 

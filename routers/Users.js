@@ -9,25 +9,65 @@ router.use(bodyParser.json());
 
 //4:Create an API to list all users.
 //5:Create an API to search an user by fullname.
+//11: Create a query parameter for paging and sorting.
 router.get('/', verifyToken, async (req, res) => {
   let resultObj={status:0,info:"", data:[]};
   if(!req.authenticated){
     resultObj["info"]="Unauthicated access";
     return res.json(resultObj)
   } 
-  let where={}
+  let where={};
+  let order=[];
+  let limit=null;
+  let offset=0;
   if(req.query['fullname']){
     where['fullname'] = req.query['fullname'].trim();
   }
+  // 11-1 check limit value
+  if(parseInt(req.query['limit'])  > 0 && Number.isInteger(parseInt(req.query['limit']) )){
+    limit=parseInt(req.query['limit'])
+  }
+  // 11-2 check offset value 
+  if( parseInt(req.query['offset']) > 0 && Number.isInteger(parseInt(req.query['offset']) )){
+    offset=parseInt(req.query['offset'])
+  }
+  // 11-3 check order value
+  if(req.query['order']){
+    // if sorting with wrong string, the server will crash.
+    let compareList = ['id', 'acct', 'fullname', 'created_at', 'updated_at'];
+    let stringArray=req.query['order'].split(',');
+    for(let i=0; i < stringArray.length; i++){
+      let orderItem=[];
+      let orderString = stringArray[i].substring(1)
+      if(stringArray[i].charAt(0)==="-"){
+        if(compareList.indexOf(orderString)!==-1){
+          orderItem.push(orderString);
+          orderItem.push('desc');
+          order.push(orderItem);
+        } 
+      }else{
+        if(compareList.indexOf(stringArray[i])!==-1){
+          orderItem.push(stringArray[i]);
+          orderItem.push('asc');
+          order.push(orderItem); 
+        }   
+      }
+    }
+  }
   try{
-    resultObj["data"] = await Users.findAll({
+    const result = await Users.findAndCountAll({
       attributes: { exclude: ['pwd'] },
-      where: where
+      where: where,
+      order:order,
+      limit:limit,
+      offset:offset
     })
     resultObj["status"]=1;
     resultObj["info"]="OK";
+    resultObj["data"]=result["rows"];
+    resultObj["count"]=result["count"];
   }catch (err){
-    resultObj["info"]=err.errors[0].message;
+    resultObj["info"]=err;
     res.send(resultObj)      
   }
   res.json(resultObj);
@@ -60,7 +100,7 @@ router.get('/:id',verifyToken ,async (req, res) => {
     }
     res.json(resultObj);
   }catch(err){
-    resultObj["info"]=err.errors[0].message;
+    resultObj["info"]=err
     res.send(resultObj)    
   }
 
@@ -85,7 +125,7 @@ router.post('/', async (req, res) =>{
     resultObj["data"]=user;
     res.send(resultObj)
   } catch(err){
-    resultObj["info"]=err.errors[0].message;
+    resultObj["info"]=err;
     res.send(resultObj)
   }
 })
@@ -108,7 +148,7 @@ router.delete('/:id',verifyToken, async (req, res) => {
     resultObj['info'] = (resultObj['status']  === 1)? `The user ID:${req.params.id} was deleted`:`The user ID does not exist`;
     res.json(resultObj);
   }catch(err){
-    resultObj["info"]=err.errors[0].message;
+    resultObj["info"]=err;
     res.send(resultObj);
   }
 })
@@ -132,6 +172,7 @@ router.put('/:id',verifyToken, async (req, res) => {
   for (let [key] of Object.entries(formData)) {
     formData[key] = formData[key].trim();
   }
+  formData.updated_at = new Date();
   if(formData["pwd"]){
     formData["pwd"] = MD5(formData["pwd"]).toString();
   }
@@ -149,8 +190,7 @@ router.put('/:id',verifyToken, async (req, res) => {
     }
     res.send(resultObj)
   }catch(err){
-    console.log(err)
-    resultObj["info"]=err.errors[0].message;
+    resultObj["info"]=err
     res.send(resultObj);
   }
 

@@ -52,3 +52,18 @@ I made a helps/verifyToken.js for common using
 * I separate the function to routers/Login.js to get token and better maintain
 #### (feat/impl-api)commit 9: Create an API to delete the user.
 * I made a function in Users.js from line 93 to 115 for the delete api.
+#### (feat/impl-api)commit 10: Create an API to update the user.
+* I made a function in Users.js from line 116 to 155 for the update api.
+* Updated the catch error message and trim function for input data
+
+## Bonus
+#### (feat/impl-api)commit 11: Create a query parameter for paging and sorting.
+* Made a multi sorting feature the usage as follows http://localhost:3000/users?order=fullname,-created_at
+input field name for ASC sorting 
+input "," for multi sorting
+input field name with "-" for DESC sorting
+* Made paging feature the usage as follows
+http://localhost:3000/users?limit=10&offset=2
+input limit for limitation the display rows number
+input offset for skipping the rows number 
+* Update the  updatedAt to updated_at for a update issue

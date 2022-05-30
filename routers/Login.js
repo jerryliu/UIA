@@ -48,7 +48,7 @@ router.post('/', async (req, res) => {
     }
     res.json(resultObj);
   }catch(err){
-    resultObj["info"]=err.errors[0].message;
+    resultObj["info"]=err
     res.send(resultObj);
   }
 
