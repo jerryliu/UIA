@@ -22,3 +22,7 @@ Use docker to run a PostgreSQL instance.
 docker pull postgres
 npm run init-database
 ```
+#### (develop)commit 3: Create a new script to populate an users table in package.json.
+```
+npm run migrate-database
+```
