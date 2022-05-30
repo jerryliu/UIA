@@ -66,4 +66,28 @@ router.get('/:id',verifyToken ,async (req, res) => {
 
 })
 
+//7:Create an API to create the user (user sign up).
+router.post('/', async (req, res) =>{
+  const formData = req.body;
+  let resultObj={status:0,info:"", data:{}};
+  if(!formData["acct"] || !formData["pwd"] || !formData["fullname"]){
+    resultObj["info"]="Please input full data";
+    return res.json(resultObj)
+  }else{
+    formData["acct"]=formData["acct"].trim();
+    formData["pwd"]=formData["pwd"].trim();
+    formData["fullname"]=formData["fullname"].trim();
+  }
+  formData["pwd"] = MD5(formData["pwd"]).toString();
+  try{
+    const user = await Users.create(formData)
+    resultObj["status"]=1
+    resultObj["info"]="Create user successfully";
+    resultObj["data"]=user;
+    res.send(resultObj)
+  } catch(err){
+    resultObj["info"]=err.name;
+    res.send(resultObj)
+  }
+})
 module.exports = router;

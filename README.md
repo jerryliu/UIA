@@ -46,3 +46,5 @@ I made a helps/verifyToken.js for common using
 * I made an object for the where condition.
 #### (feat/impl-api)commit 6: Create an API to get the user’s detailed information.
 * I made a function in Users.js from line 36 to 65 for the api
+#### (feat/impl-api)commit 7: Create an API to create the user (user sign up).
+* I made a function in Users.js from line 70 to 92 for the api and incloud MD5 for hash password
