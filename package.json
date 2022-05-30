@@ -5,7 +5,9 @@
   "main": ".eslintrc.js",
   "scripts": {
     "init-database": "docker run --name test-instance -p 5432:5432 -e POSTGRES_DATABASE=ui_test -e POSTGRES_USER=ui_test -e POSTGRES_PASSWORD=password -d postgres",
-    "migrate-database": "npx sequelize-cli db:migrate"
+    "migrate-database": "npx sequelize-cli db:migrate",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -22,9 +24,15 @@
   },
   "homepage": "https://github.com/jerryliu/UIA#readme",
   "dependencies": {
+    "body-parser": "^1.20.0",
+    "crypto-js": "^4.1.1",
     "express": "^4.18.1",
     "fs": "^0.0.1-security",
+    "jsonwebtoken": "^8.5.1",
     "path": "^0.12.7",
     "sequelize": "^6.20.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.16"
   }
 }

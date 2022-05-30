@@ -26,3 +26,19 @@ npm run init-database
 ```
 npm run migrate-database
 ```
+## Basic
+### Requirements
+* Create a feature branch: feat/impl-api.
+```
+git checkout -b feat/impl-api
+git push --set-upstream origin feat/impl-api
+```
+* Use express to build a RESTful service.
+Postman URL as follows https://www.getpostman.com/collections/c578f71fd88881111ed1
+* Use sequelize to access the users table.
+I made a modes/users.js for aceess the user table 
+* Use JWT as access token for each API, except sign in and sign up.
+I made a helps/verifyToken.js for common using
+#### (feat/impl-api)commit 4: Create an API to list all users.
+* I made a index.js, database.js, routers/Users.js and migrations 
+* Please sign up and login for the get user token
