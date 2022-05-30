@@ -90,4 +90,27 @@ router.post('/', async (req, res) =>{
     res.send(resultObj)
   }
 })
+//9:Create an API to delete the user.
+router.delete('/:id',verifyToken, async (req, res) => {
+  let resultObj={status:0,info:"", data:{}};
+  if(!req.authenticated){
+    resultObj["info"]="Unauthicated access";
+    return res.json(resultObj)
+  }
+  // Check if id not number  
+  if(isNaN(req.params.id)){
+    resultObj["info"]="Please input a user ID";
+    return res.json(resultObj)
+  }
+  try{
+    resultObj['status'] = await Users.destroy({
+        where: {id: req.params.id}
+    });
+    resultObj['info'] = (resultObj['status']  === 1)? `The user ID:${req.params.id} was deleted`:`The user ID does not exist`;
+    res.json(resultObj);
+  }catch(err){
+    resultObj["info"]=err.name;
+    res.send(resultObj)
+  }
+})
 module.exports = router;

@@ -48,3 +48,7 @@ I made a helps/verifyToken.js for common using
 * I made a function in Users.js from line 36 to 65 for the api
 #### (feat/impl-api)commit 7: Create an API to create the user (user sign up).
 * I made a function in Users.js from line 70 to 92 for the api and incloud MD5 for hash password
+#### (feat/impl-api)commit 8: Create an API to generate the token to the user (user sign in).
+* I separate the function to routers/Login.js to get token and better maintain
+#### (feat/impl-api)commit 9: Create an API to delete the user.
+* I made a function in Users.js from line 93 to 115 for the delete api.
