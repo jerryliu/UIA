@@ -32,4 +32,38 @@ router.get('/', verifyToken, async (req, res) => {
   }
   res.json(resultObj);
 })
+
+//6:Create an API to get the user’s detailed information.
+router.get('/:id',verifyToken ,async (req, res) => {
+  // Check if id not number  
+  let resultObj={status:0,info:"", data:{}};
+  if(!req.authenticated){
+    resultObj["info"]="Unauthicated access";
+    return res.json(resultObj)
+  } 
+  if(isNaN(req.params.id)){
+    resultObj["info"]="Please Input a user ID";
+    return res.json(resultObj)
+  }
+  try{
+    // Query by id
+    resultObj["data"] = await Users.findOne({
+      where: {id: req.params.id}
+    });
+    if(resultObj["data"]  === null){
+      resultObj["status"] = 0;
+      resultObj["info"] ="User not found";
+      resultObj["data"]  = {};
+    }else{
+      resultObj["status"] =1;
+      resultObj["info"] ="OK";
+    }
+    res.json(resultObj);
+  }catch(err){
+    resultObj["info"]=err.name;
+    res.send(resultObj)    
+  }
+
+})
+
 module.exports = router;
