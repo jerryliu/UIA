@@ -67,3 +67,9 @@ http://localhost:3000/users?limit=10&offset=2
 input limit for limitation the display rows number
 input offset for skipping the rows number 
 * Update the  updatedAt to updated_at for a update issue
+
+#### (feat/impl-api)commit 12: Create an API to update user’s fullname.
+* It is the same feature with commit 10
+#### (feat/impl-api)commit 13: Create a swagger document for your APIs.
+* Made a swagger document URL http://localhost:3000/api-docs
+* The user sign in and login feature can be tested 

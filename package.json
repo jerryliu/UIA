@@ -30,7 +30,9 @@
     "fs": "^0.0.1-security",
     "jsonwebtoken": "^8.5.1",
     "path": "^0.12.7",
-    "sequelize": "^6.20.1"
+    "sequelize": "^6.20.1",
+    "swagger-jsdoc": "^6.2.1",
+    "swagger-ui-express": "^4.4.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.16"

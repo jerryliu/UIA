@@ -7,9 +7,67 @@ const verifyToken = require('../helps/verifyToken');
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 
-//4:Create an API to list all users.
-//5:Create an API to search an user by fullname.
+//4: Create an API to list all users.
+//5: Create an API to search an user by fullname.
 //11: Create a query parameter for paging and sorting.
+//13: Create a swagger document for your APIs.
+
+
+
+/**
+ * @swagger
+ * components:
+ *  schemas:
+ *    user:
+ *      type: object
+ *      required:
+ *        - acct
+ *        - pwd
+ *        - fullname
+ *      properties:
+ *        id:
+ *          type: interger
+ *        acct:
+ *          type: string
+ *        pwd:
+ *          type: string
+ *        fullname:
+ *          type: string
+ *        created_at:
+ *          type: date
+ *        updated_at:
+ *          type: date
+ *      example:     
+ *        status: 1
+ *        info: OK
+ *        count: 9
+ *        data:  
+ *        - id: 1
+ *          acct: jerry
+ *          fullname: jerryliu
+ *          created_at: 2022-05-30T18:56:16.315Z
+ *          updated_at: 2022-05-30T18:56:16.315Z
+ * 
+ */
+/**
+ * @swagger
+ * /users:
+ *   get:
+ *    security:
+ *      - Bearer: []
+ *    summary:  Returns the list of all the users
+ *    tags: [User] 
+ *    responses:
+ *      200:
+ *        description:  The list of the users
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#/components/schemas/user'
+ */
+
 router.get('/', verifyToken, async (req, res) => {
   let resultObj={status:0,info:"", data:[]};
   if(!req.authenticated){
@@ -74,6 +132,32 @@ router.get('/', verifyToken, async (req, res) => {
 })
 
 //6:Create an API to get the user’s detailed information.
+/** 
+* @swagger
+* /users/id:
+*   get:
+*    security:
+*      - Bearer: []
+*    summary:  Returns the user’s detailed information.
+*    tags: [User] 
+*    responses:
+*      200:
+*        description:  The list of the users
+*        content:
+*          application/json:
+*            schema:
+*              type: object
+*              example:
+*                status: 1
+*                info: OK
+*                data:
+*                  id: 30
+*                  acct: jerry
+*                  pwd: ee5d...
+*                  fullname: jerry
+*                  created_at: '2022-05-31T09:46:03.775Z'
+*                  updated_at: '2022-05-31T09:46:03.775Z'
+*/
 router.get('/:id',verifyToken ,async (req, res) => {
   // Check if id not number  
   let resultObj={status:0,info:"", data:{}};
@@ -107,6 +191,46 @@ router.get('/:id',verifyToken ,async (req, res) => {
 })
 
 //7:Create an API to create the user (user sign up).
+/**
+ * @swagger
+ * /users:
+ *   post:
+ *    summary:  User sign up
+ *    tags: [User]
+ *    requestBody:
+ *      requested: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              acct:
+ *                type: string
+ *              pwd:
+ *                type: string
+ *            example:
+ *              acct: jerry123
+ *              pwd: jerry123
+ *              fullname: jerryliu 
+ *    responses:
+ *      200:
+ *        description:  The list of the users
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              example:
+ *                status: 1
+ *                info: "Create user successfully"
+ *                data: 
+ *                  created_at: '2022-05-31T11:54:54.611Z'
+ *                  updated_at: '2022-05-31T11:54:54.611Z'
+ *                  id: 33
+ *                  acct: jerry123
+ *                  pwd: 750664a5394b899dac8bf17d0a27bda4
+ *                  fullname: jerryliu
+ * 
+ */
 router.post('/', async (req, res) =>{
   const formData = req.body;
   let resultObj={status:0,info:"", data:{}};
@@ -130,6 +254,27 @@ router.post('/', async (req, res) =>{
   }
 })
 //9:Create an API to delete the user.
+
+/** 
+* @swagger
+* /users/id:
+*   delete:
+*    security:
+*      - Bearer: []
+*    summary:  Delete the.
+*    tags: [User] 
+*    responses:
+*      200:
+*        description:  The list of the users
+*        content:
+*          application/json:
+*            schema:
+*              type: object
+*              example:
+*                status: 1
+*                info: OK
+*                data: {}
+*/
 router.delete('/:id',verifyToken, async (req, res) => {
   let resultObj={status:0,info:"", data:{}};
   if(!req.authenticated){
@@ -154,6 +299,31 @@ router.delete('/:id',verifyToken, async (req, res) => {
 })
 
 //10:Create an API to update the user.
+//12:Create an API to update user’s fullname.
+/** 
+* @swagger
+* /users/id:
+*   put:
+*    security:
+*      - Bearer: []
+*    summary: Update the user data.
+*    tags: [User] 
+*    responses:
+*      200:
+*        description:  The list of the users
+*        content:
+*          application/json:
+*            schema:
+*              type: object
+*              example:
+*                status: 1
+*                info: The user was updated
+*                data:
+*                  acct: jerry
+*                  pwd: ee5d...
+*                  fullname: jerry
+*                  updated_at: '2022-05-31T09:46:03.775Z'
+*/
 router.put('/:id',verifyToken, async (req, res) => {
   let resultObj={status:0,info:"", data:{}};
   if(!req.authenticated){
