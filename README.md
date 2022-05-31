@@ -73,3 +73,10 @@ input offset for skipping the rows number
 #### (feat/impl-api)commit 13: Create a swagger document for your APIs.
 * Made a swagger document URL http://localhost:3000/api-docs
 * The user sign in and login feature can be tested 
+
+#### (feat/impl-api)commit 14: Use docker-compose to run your application with PostgreSQL.
+I made a dockerfile and docker-compose.yml 
+please run the script as follows
+```
+docker-compose up
+```

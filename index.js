@@ -4,7 +4,7 @@ const db = require('./config/database')
 const swaggerUI = require("swagger-ui-express")
 const swaggerJsDoc = require("swagger-jsdoc")
 // Test Database
-db.authenticate().then(()=>console.log("DB connect")).catch(err => console(err))
+db.authenticate().then(()=>console.log("DB connect")).catch(err => console.log(err))
 
 // swagger options 
 const options = {

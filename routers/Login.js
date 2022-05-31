@@ -6,7 +6,7 @@ const path = require('path');
 const privateKey = fs.readFileSync(path.resolve('./token/jwtRS256.key'));
 const jwt = require('jsonwebtoken');
 const { MD5 } = require('crypto-js');
-const Users =require('../models/Users');
+const Users =require('../models/users');
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use( bodyParser.json());
 
