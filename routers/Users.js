@@ -335,7 +335,7 @@ router.put('/:id',verifyToken, async (req, res) => {
     return res.json(resultObj)
   }
   const formData = req.body;
-  if(!formData["acct"] || !formData["pwd"] || !formData["fullname"]){
+  if(Object.keys(formData).length === 0){
     resultObj["info"]="Please input full data";
     return res.json(resultObj)
   }
