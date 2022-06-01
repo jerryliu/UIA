@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const helmet = require("helmet");
 const http = require('http');
 const server = http.createServer(app)
 const { Server } = require("socket.io");
@@ -29,6 +30,8 @@ const options = {
     apis: [`${__dirname}/routers/*.js`]
 }
 const specs = swaggerJsDoc(options)
+// Apply the helmet package for security issues
+app.use(helmet());
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(specs))
 app.get('/', (req, res)=> res.send("Index"));
 

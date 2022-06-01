@@ -80,8 +80,7 @@ please run the script as follows
 ```
 docker-compose up
 ```
-#### (feat/impl-api)commit 15: Create a websocket to push the notification when
-the user failed to sign in.
+#### (feat/impl-api)commit 15: Create a websocket to push the notification when the user sign in.
 *  Created websocket page for testing the URL as follows http://localhost:3000/socket  
 *  You can test it on postman https://www.getpostman.com/collections/c578f71fd88881111ed1 or use the curl as follows 
 
@@ -91,3 +90,32 @@ curl --location --request POST 'http://localhost:3000/login' \
 --data-urlencode 'acct=jerry' \
 --data-urlencode 'pwd=jerry'
 ```
+
+#### (feat/impl-api)commit 16: Enable security 
+*  Applied the helemt pacakge for security issues 
+
+```
+curl http://localhost:3000 --include
+HTTP/1.1 200 OK
+Content-Security-Policy: default-src 'self';base-uri 'self';block-all-mixed-content;font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests
+Cross-Origin-Embedder-Policy: require-corp
+Cross-Origin-Opener-Policy: same-origin
+Cross-Origin-Resource-Policy: same-origin
+X-DNS-Prefetch-Control: off
+Expect-CT: max-age=0
+X-Frame-Options: SAMEORIGIN
+Strict-Transport-Security: max-age=15552000; includeSubDomains
+X-Download-Options: noopen
+X-Content-Type-Options: nosniff
+Origin-Agent-Cluster: ?1
+X-Permitted-Cross-Domain-Policies: none
+Referrer-Policy: no-referrer
+X-XSS-Protection: 0
+Content-Type: text/html; charset=utf-8
+Content-Length: 5
+ETag: W/"5-wt+bkyY3/p0yoPFtocEYczmPhz0"
+Date: Wed, 01 Jun 2022 04:26:39 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+```
+ 
