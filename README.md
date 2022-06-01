@@ -80,3 +80,14 @@ please run the script as follows
 ```
 docker-compose up
 ```
+#### (feat/impl-api)commit 15: Create a websocket to push the notification when
+the user failed to sign in.
+*  Created websocket page for testing the URL as follows http://localhost:3000/socket  
+*  You can test it on postman https://www.getpostman.com/collections/c578f71fd88881111ed1 or use the curl as follows 
+
+```
+curl --location --request POST 'http://localhost:3000/login' \
+--header 'Content-Type: application/x-www-form-urlencoded' \
+--data-urlencode 'acct=jerry' \
+--data-urlencode 'pwd=jerry'
+```

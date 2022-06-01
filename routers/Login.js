@@ -10,8 +10,6 @@ const Users =require('../models/users');
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use( bodyParser.json());
 
-//8:Create an API to generate the token to the user (user sign in).
-//13: Create a swagger document for your APIs.
 
 /**
  * @swagger
@@ -72,9 +70,10 @@ router.use( bodyParser.json());
  *                  token: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2N0IjoiamVycnkiLCJwd2QiOiIzMDAzNTYwN2VlNWJiMzc4YzcxYWI0MzRhNmQwNTQxMCIsImZ1bGxuYW1lIjpbImZ1bGxuYW1lIl0sImlhdCI6MTY1Mzk5MDc4MX
  */
 
+//8:Create an API to generate the token to the user (user sign in).
+//13: Create a swagger document for your APIs.
 router.post('/', async (req, res) => {
   const formData = req.body;
-  console.log(req.body);
   let resultObj={status:0,info:"", data:{}};
   if(!formData["acct"] || !formData["pwd"]){
     resultObj["info"]="Please input full data";
@@ -85,7 +84,6 @@ router.post('/', async (req, res) => {
   }
   formData["pwd"] = MD5(formData["pwd"]).toString();
 
-  // Query by acct and pwd
   try{
     resultObj["data"] = await Users.findOne({
       where: {
@@ -101,12 +99,14 @@ router.post('/', async (req, res) => {
     );
     if(resultObj["data"]  === null){
       resultObj["status"] = 0;
-      resultObj["info"] ="User not found";
+      resultObj["info"] ="User not found or wrong password";
       resultObj["data"]  = {};
+      req.io.sockets.emit('update', `${formData["acct"]} was signed in failed`); 
     }else{
       resultObj["status"] =1;
       resultObj["info"] ="OK";
       resultObj["token"] = token;
+      req.io.sockets.emit('update', `${formData["acct"]} was signed in successful`); 
     }
     res.json(resultObj);
   }catch(err){

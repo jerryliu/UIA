@@ -1,4 +1,9 @@
 const express = require('express');
+const app = express();
+const http = require('http');
+const server = http.createServer(app)
+const { Server } = require("socket.io");
+const io = new Server(server);
 // Database connect
 const db = require('./config/database')
 const swaggerUI = require("swagger-ui-express")
@@ -23,14 +28,20 @@ const options = {
     },
     apis: [`${__dirname}/routers/*.js`]
 }
-console.log(`${__dirname}/routers/*.js`);
-const app = express();
 const specs = swaggerJsDoc(options)
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(specs))
 app.get('/', (req, res)=> res.send("Index"));
 
+app.get('/socket', async (req, res) => {
+    res.sendFile(__dirname + '/index.html');
+});
+// Make io accessible to other router
+app.use((req,res,next)=>{
+    req.io = io;
+    next();
+});
 // Users routers
 app.use('/users', require('./routers/Users'));
 app.use('/login', require('./routers/Login'));
 const PORT= process.env.PORT || 3000;
-app.listen(PORT, console.log(`Server started on port ${PORT}`))
+server.listen(PORT, console.log(`Server started on port ${PORT}`))
