@@ -54,6 +54,7 @@ app.use((req,res,next)=>{
 // Users routers
 app.use('/users', require('./routers/Users'));
 app.use('/login', require('./routers/Login'));
+app.use("/public", express.static(path.join(__dirname, 'public')));
 const sslServer = https.createServer(httpsOptions, app)
 sslServer.listen(3443, ()=> console.log("Secure service on port 3443"))
 server.listen(PORT, console.log(`Server started on port ${PORT}`))

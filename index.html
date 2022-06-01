@@ -4,17 +4,13 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'">
     <title>Socket IO</title>
 </head>
 <body>
     <p>The Account <span id="account"></span></p>
 </body>
-<script src="socket.io/socket.io.js"></script>
-<script>
-    var socket = io();
-      socket.on('update', function(msg) {
-        var item = document.getElementById('account');
-        item.textContent = msg;
-    });
-  </script>
+<script type="text/javascript" src="socket.io/socket.io.js"></script>
+<script type="text/javascript" src="public/socket-client.js"></script>
+
 </html>
